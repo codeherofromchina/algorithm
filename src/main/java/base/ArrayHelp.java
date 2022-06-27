@@ -75,4 +75,18 @@ public class ArrayHelp {
         }
         return ans;
     }
+
+
+    /**
+     * 交换数组两个下标的位置
+     *
+     * @param arr
+     * @param indexA
+     * @param indexB
+     */
+    public static void swap(int[] arr, int indexA, int indexB) {
+        int tmp = arr[indexA];
+        arr[indexA] = arr[indexB];
+        arr[indexB] = tmp;
+    }
 }
