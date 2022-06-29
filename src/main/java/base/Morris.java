@@ -3,12 +3,12 @@ package base;
 import structure.TreeNode;
 
 /**
- * mirrors遍历树
+ * morris遍历树
  *
  * @Auther 王晓丹
  * @Date 2022/6/29 上午10:13
  */
-public class Morrors {
+public class Morris {
 
 
     public static void main(String[] args) {
@@ -21,20 +21,38 @@ public class Morrors {
         head.right.right = new TreeNode("7");
         head.right.right.left = new TreeNode("8");
         head.right.right.right = new TreeNode("9");
-        mirrors(head);
+        morris(head);
         System.out.println("\n递归前序遍历：");
         preorderTraversal(head);
-        System.out.println("\nmirrors前序遍历：");
-        preorderTraversalByMirrors(head);
+        System.out.println("\nmorris前序遍历：");
+        preorderTraversalByMorris(head);
         System.out.println("\n递归中序遍历：");
         inorderTraversal(head);
-        System.out.println("\nmirrors中序遍历：");
-        inorderTraversalByMirrors(head);
+        System.out.println("\nmorris中序遍历：");
+        inorderTraversalByMorris(head);
         System.out.println("\n递归后序遍历：");
         postorderTraversal(head);
-        System.out.println("\r\nmirrors后序遍历：");
-        postorderTraversalByMirrors(head);
-        System.out.println();
+        System.out.println("\r\nmorris后序遍历：");
+        postorderTraversalByMorris(head);
+
+
+        TreeNode head02 = new TreeNode("1");
+        head02.left = new TreeNode("2");
+        head02.left.right = new TreeNode("3");
+        head02.left.right.left = new TreeNode("10");
+        head02.left.right.left.left = new TreeNode("11");
+        head02.left.right.left.right = new TreeNode("12");
+        head02.right = new TreeNode("4");
+        head02.right.right = new TreeNode("5");
+        head02.right.right.left = new TreeNode("6");
+        head02.right.right.left.left = new TreeNode("8");
+        head02.right.right.left.right = new TreeNode("9");
+        head02.right.right.right = new TreeNode("7");
+
+        System.out.println("\r\n递归求最小高度");
+        System.out.println(minHeight(head02));
+        System.out.println("morris求最小高度");
+        System.out.println(minHeightByMorris(head02));
     }
 
 
@@ -47,7 +65,7 @@ public class Morrors {
         preorderTraversal(head.right);
     }
 
-    private static void preorderTraversalByMirrors(TreeNode head) {
+    private static void preorderTraversalByMorris(TreeNode head) {
         if (head == null) {
             return;
         }
@@ -74,7 +92,7 @@ public class Morrors {
     }
 
 
-    public static void mirrors(TreeNode head) {
+    public static void morris(TreeNode head) {
         if (head == null) {
             return;
         }
@@ -101,9 +119,9 @@ public class Morrors {
 
     /**
      * 中序遍历
-     * mirrors方法
+     * morris方法
      */
-    public static void inorderTraversalByMirrors(TreeNode head) {
+    public static void inorderTraversalByMorris(TreeNode head) {
         if (head == null) {
             return;
         }
@@ -144,11 +162,11 @@ public class Morrors {
 
     /**
      * 后序遍历
-     * mirrors方法
+     * morris方法
      *
      * @param head
      */
-    public static void postorderTraversalByMirrors(TreeNode head) {
+    public static void postorderTraversalByMorris(TreeNode head) {
         if (head == null) {
             return;
         }
@@ -225,6 +243,81 @@ public class Morrors {
             pre = cur;
             cur = post;
         }
+    }
+
+    public static int minHeight(TreeNode head) {
+        if (head == null) {
+            return 0;
+        }
+        if (head.left == null && head.right == null) {
+            return 1;
+        }
+
+        int answer = Integer.MAX_VALUE;
+        if (head.left != null) {
+            answer = minHeight(head.left);
+        }
+        if (head.right != null) {
+            answer = Math.min(answer, minHeight(head.right));
+        }
+
+        return answer + 1;
+    }
+
+
+    /**
+     * 求一个数的叶子结点最小高度
+     *
+     * @return
+     */
+    public static int minHeightByMorris(TreeNode head) {
+        if (head == null) {
+            return 0;
+        }
+        int answer = Integer.MAX_VALUE;
+        int height = 1;
+        TreeNode cur = head;
+        TreeNode pre = null;
+        TreeNode leftMostRight;
+        while (cur != null) {
+            leftMostRight = cur.left;
+            if (leftMostRight != null) {
+                int leftHeight = 1;
+                while (leftMostRight.right != null && leftMostRight.right != cur) {
+                    leftMostRight = leftMostRight.right;
+                    leftHeight++;
+                }
+                if (leftMostRight.right == null) {
+                    if (leftMostRight.left == null) {
+                        // 左树最右节点是叶子节点，收集答案
+                        answer = Math.min(answer, height + leftHeight);
+                    }
+                    leftMostRight.right = cur;
+                    cur = cur.left;
+                    height++;
+                    continue;
+                }
+                leftMostRight.right = null;
+                if (pre == leftMostRight) {
+                    height -= (leftHeight + 1);
+                }
+            }
+            pre = cur;
+            cur = cur.right;
+            height++;
+        }
+        // 最右侧是否是叶子节点
+        cur = head;
+        height = 1;
+        while (cur.right != null) {
+            height++;
+            cur = cur.right;
+        }
+        if (cur.left == null) {
+            answer = Math.min(answer, height);
+        }
+
+        return answer;
     }
 }
 
