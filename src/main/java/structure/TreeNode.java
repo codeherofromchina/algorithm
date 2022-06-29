@@ -8,7 +8,6 @@ import lombok.Data;
  * @Auther 王晓丹
  * @Date 2022/6/26 上午10:57
  */
-@Data
 public class TreeNode {
 
     public TreeNode(String value) {
@@ -18,14 +17,14 @@ public class TreeNode {
     /**
      * 节点数据
      */
-    private String value;
+    public String value;
     /**
      * 左树节点
      */
-    private TreeNode right;
+    public TreeNode right;
     /**
      * 右树节点
      */
-    private TreeNode left;
+    public TreeNode left;
 
 }

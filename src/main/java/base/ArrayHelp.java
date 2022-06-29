@@ -89,4 +89,23 @@ public class ArrayHelp {
         arr[indexA] = arr[indexB];
         arr[indexB] = tmp;
     }
+
+
+    /**
+     * 字节数组反转
+     *
+     * @param cArr
+     * @return
+     */
+    public static char[] reverse(char[] cArr) {
+        if (cArr == null) {
+            return null;
+        }
+        int len = cArr.length;
+        char[] retCharArr = new char[len];
+        for (int i = 0, j = len - 1; i < len; i++, j--) {
+            retCharArr[i] = cArr[j];
+        }
+        return retCharArr;
+    }
 }
