@@ -8,6 +8,7 @@ package base;
  */
 public class BinarySearchTree {
     private Node root;
+    private int size;
 
 
     /**
@@ -108,18 +109,17 @@ public class BinarySearchTree {
 
     private Node searchNode(int key) {
         Node cur = root;
-        while (cur != null) {
-            if (cur.key == key) {
-                return cur;
-            }
+        while (cur != null && cur.key != key) {
             cur = cur.key > key ? cur.left : cur.right;
         }
-        return null;
+        return cur;
     }
 
     public boolean insert(int key, Object value) {
+        Node node = new Node(key, value);
         if (root == null) {
-            root = new Node(key, value);
+            root = node;
+            size++;
             return true;
         }
         Node cur = root;
@@ -140,6 +140,7 @@ public class BinarySearchTree {
                 cur.right = next;
             }
             next.parent = cur;
+            size++;
             break;
         }
         return true;
